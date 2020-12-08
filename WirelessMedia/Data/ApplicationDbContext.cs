@@ -12,5 +12,7 @@ namespace WirelessMedia.Data
             : base(options)
         {
         }
+
+        public DbSet<Category> Category { get; set; }
     }
 }
