@@ -9,6 +9,7 @@ using WirelessMedia.Models;
 
 namespace WirelessMedia.Controllers
 {
+    [Area("Customer")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
