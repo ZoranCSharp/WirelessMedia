@@ -131,9 +131,7 @@ namespace WirelessMedia.Areas.Admin.Controllers
                 await _db.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
-            }
-
-            
-        }
+            }            
+        }       
     }
 }
