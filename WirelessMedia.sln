@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30711.63
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WirelessMedia", "WirelessMedia\WirelessMedia.csproj", "{CF73ED27-C3EF-497C-962A-698A68E3499F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF73ED27-C3EF-497C-962A-698A68E3499F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF73ED27-C3EF-497C-962A-698A68E3499F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF73ED27-C3EF-497C-962A-698A68E3499F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF73ED27-C3EF-497C-962A-698A68E3499F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2DB79F5-D50F-4075-93D1-9B2C1AC57C45}
+	EndGlobalSection
+EndGlobal
