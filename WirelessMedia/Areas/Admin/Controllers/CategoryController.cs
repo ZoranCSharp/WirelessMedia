@@ -23,5 +23,11 @@ namespace WirelessMedia.Areas.Admin.Controllers
         {
             return View(await _db.Category.ToListAsync());
         }
+        
+        //GET - CREATE
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
