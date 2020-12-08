@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WirelessMedia.Data;
+using WirelessMedia.Models;
 
 namespace WirelessMedia.Areas.Admin.Controllers
 {
@@ -28,6 +29,66 @@ namespace WirelessMedia.Areas.Admin.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        //POST - CREATE
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                //if valid
+                _db.Category.Add(category);
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(category);
+            }
+        }
+
+        //GET - EDIT
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var category = await _db.Category.FindAsync(id);
+
+                if(category == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(category);
+                }
+            }
+        }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Category category)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Update(category);
+
+                await _db.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return View(category);
+            }
         }
     }
 }

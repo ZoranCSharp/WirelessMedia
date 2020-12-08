@@ -33,14 +33,14 @@
                 </tr>
                 @foreach (var item in Model)
                 {
-                    < tr >
-                    < td >
+                    <tr>
+                    <td>
                     @Html.DisplayFor(z => item.Name)
-                    </ td >
-                    < td >
-                    EDIT | DELETE | DETAILS
-                    </ td >
-                    </ tr >
+                    </td>                
+                    <td>
+                    <partial name="_TableButtonPartial" model="item.Id"/>
+                    </td>
+                    </tr>
                 }
             </table>
         }
