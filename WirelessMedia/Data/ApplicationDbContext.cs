@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using WirelessMedia.Models;
 
 namespace WirelessMedia.Data
 {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WirelessMedia.Data
+namespace WirelessMedia.Models
 {
     public class Category
     {
