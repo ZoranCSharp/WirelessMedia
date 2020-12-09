@@ -97,5 +97,35 @@ namespace WirelessMedia.Areas.Admin.Controllers
 
             return View(productVM);
         }
+
+        //POST - EDIT
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                    var productFromDB = await _db.Product.FindAsync(id);
+                    productFromDB.Name = ProductVM.Product.Name;
+                    productFromDB.Description = ProductVM.Product.Description;
+                    productFromDB.Manufacturer = ProductVM.Product.Manufacturer;
+                    productFromDB.Supplier = ProductVM.Product.Supplier;
+                    productFromDB.Price = ProductVM.Product.Price;
+                    productFromDB.CategoryId = ProductVM.Product.CategoryId;
+
+                    await _db.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+            }
+
+            ProductViewModel product = new ProductViewModel()
+            {
+                Product = ProductVM.Product,
+                Category = _db.Category,
+                StatusMessage = StatusMessage
+            };
+
+            return View(product);
+        }
     }
 }
