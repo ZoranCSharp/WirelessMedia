@@ -77,5 +77,25 @@ namespace WirelessMedia.Areas.Admin.Controllers
             return View(product);
 
         }
+
+        //GET - EDIT
+        public async Task<IActionResult> Edit(int? id)
+        {
+            var productID = await _db.Product.FindAsync(id);
+
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductViewModel productVM = new ProductViewModel()
+            {
+                Product = productID,
+                Category = _db.Category,
+                StatusMessage = StatusMessage
+            };
+
+            return View(productVM);
+        }
     }
 }
