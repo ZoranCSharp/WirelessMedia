@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WirelessMedia.Data;
 using WirelessMedia.Models;
+using WirelessMedia.Models.ViewModel;
 
 namespace WirelessMedia.Areas.Admin.Controllers
 {
@@ -13,6 +14,9 @@ namespace WirelessMedia.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _db;
+
+        [TempData]
+        public string StatusMessage { get; set; }
 
         public CategoryController( ApplicationDbContext db)
         {
@@ -28,26 +32,44 @@ namespace WirelessMedia.Areas.Admin.Controllers
         //GET - CREATE
         public IActionResult Create()
         {
-            return View();
+            CategoryViewModel model = new CategoryViewModel()
+            {
+                Category = new Models.Category(),
+            };
+
+            return View(model);
         }
 
         //POST - CREATE
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create(CategoryViewModel model)
         {
             if (ModelState.IsValid)
             {
-                //if valid
-                _db.Category.Add(category);
-                await _db.SaveChangesAsync();
+                var categoryName = _db.Category.Where(z => z.Name == model.Category.Name);
 
-                return RedirectToAction(nameof(Index));
+                if (categoryName.Count() > 0)
+                {
+                    StatusMessage = "Error : There are already category under " + categoryName.First().Name + ".Please use another name.";
+                }
+                else
+                {
+                    //if valid
+                    _db.Category.Add(model.Category);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }        
             }
-            else
-            {
+            
+                CategoryViewModel category = new CategoryViewModel()
+                {
+                    Category = model.Category,
+                    StatusMessage = StatusMessage
+                };
+
                 return View(category);
-            }
+            
         }
 
         //GET - EDIT
