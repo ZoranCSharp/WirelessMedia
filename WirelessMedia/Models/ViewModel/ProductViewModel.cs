@@ -9,5 +9,6 @@ namespace WirelessMedia.Models.ViewModel
     {
         public Product Product { get; set; }
         public IEnumerable<Category> Category { get; set; }
+        public string StatusMessage { get; set; }
     }
 }

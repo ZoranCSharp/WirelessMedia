@@ -24,16 +24,21 @@
                 <tr class="table-secondary">
                     <th>
                         @Html.DisplayNameFor(z => z.Name)
-                    </th><th>
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(z => z.Description)
-                    </th><th>
-                        @Html.DisplayNameFor(z => z.Manufacturer)
-                    </th><th>
-                        @Html.DisplayNameFor(z => z.Supplier)
-                    </th><th>
-                        @Html.DisplayNameFor(z => z.Price)
-                    </th><th>
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(z => z.CategoryId)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(z => z.Manufacturer)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(z => z.Supplier)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(z => z.Price)
                     </th>
                     <th>
 
@@ -44,24 +49,29 @@
                 </tr>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(z => item.Name)
-                        </td><td>
-                            @Html.DisplayFor(z => item.Description)
-                        </td><td>
-                            @Html.DisplayFor(z => item.Manufacturer)
-                        </td><td>
-                            @Html.DisplayFor(z => item.Supplier)
-                        </td><td>
-                            @Html.DisplayFor(z => item.Price)
-                        </td><td>
-                            @Html.DisplayFor(z => item.Category.Name)
-                        </td>
-                        <td>
-                            <partial name="_TableButtonPartial" model="item.Id" />
-                        </td>
-                    </tr>
+            <tr>
+                <td>
+                    @Html.DisplayFor(z => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(z => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(z => item.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(z => item.Manufacturer)
+                </td>
+                <td>
+                    @Html.DisplayFor(z => item.Supplier)
+                </td>
+                <td>
+                    @Html.DisplayFor(z => item.Price)
+                </td>
+                <td>
+                    <partial name="_TableButtonPartial" model="item.Id" />
+                </td>
+            </tr>
                 }
             </table>
         }

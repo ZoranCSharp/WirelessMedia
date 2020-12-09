@@ -18,13 +18,17 @@ namespace WirelessMedia.Areas.Admin.Controllers
         [BindProperty]
         public ProductViewModel ProductVM { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
         public ProductController(ApplicationDbContext db)
         {
             _db = db;
             ProductVM = new ProductViewModel()
-            {
+            {                
+                Product = new Models.Product(),
                 Category = _db.Category,
-                Product = new Models.Product()
+                StatusMessage = StatusMessage
             };
         }
 
@@ -40,6 +44,38 @@ namespace WirelessMedia.Areas.Admin.Controllers
         public IActionResult Create()
         {
             return View(ProductVM);
+        }
+
+        //POST - CREATE
+        [HttpPost, ActionName("Create")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePOST()
+        {
+            if (ModelState.IsValid)
+            {
+              
+                var productName = _db.Product.Where(z => z.Name == ProductVM.Product.Name && z.Manufacturer == ProductVM.Product.Manufacturer && z.CategoryId == ProductVM.Product.CategoryId);
+
+                if(productName.Count() > 0)
+                {
+                    StatusMessage = "Error : There is already product " + productName.First().Name + " whose manufacturer is " + productName.First().Manufacturer + ". Please choose different category.";               
+                }
+                else
+                {
+                    _db.Product.Add(ProductVM.Product);
+                    await _db.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            ProductViewModel product = new ProductViewModel()
+            {
+                Product = ProductVM.Product,
+                Category = _db.Category,
+                StatusMessage = StatusMessage
+            };
+
+            return View(product);
+
         }
     }
 }
