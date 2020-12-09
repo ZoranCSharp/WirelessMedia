@@ -55,7 +55,7 @@ namespace WirelessMedia.Areas.Admin.Controllers
                 }
                 else
                 {
-                    //if valid
+                    //if valid and not a same name
                     _db.Category.Add(model.Category);
                     await _db.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -73,7 +73,7 @@ namespace WirelessMedia.Areas.Admin.Controllers
         }
 
         //GET - EDIT
-        public async Task<IActionResult> Edit(int? id)
+        public  async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -83,34 +83,53 @@ namespace WirelessMedia.Areas.Admin.Controllers
             {
                 var category = await _db.Category.FindAsync(id);
 
-                if(category == null)
+                if (category == null)
                 {
                     return NotFound();
                 }
-                else
+
+                CategoryViewModel categoryVM = new CategoryViewModel()
                 {
-                    return View(category);
-                }
+                    Category = category
+                };
+
+                return View(categoryVM);
+                
             }
         }
 
         //POST - EDIT
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Category category)
+        public async Task<IActionResult> Edit(int id, CategoryViewModel model)
         {
             if (ModelState.IsValid)
             {
-                _db.Update(category);
+                var categoryName = _db.Category.Where(z => z.Name == model.Category.Name);
 
-                await _db.SaveChangesAsync();
+                if (categoryName.Count() > 0)
+                {
+                    StatusMessage = "Error : There are already category under " + categoryName.First().Name + ".Please use another name.";
+                }
+                else
+                {
+                    //if valid and not a same name
+                    var categoryFromDb = await _db.Category.FindAsync(id);
+                    categoryFromDb.Name = model.Category.Name;
 
-                return RedirectToAction(nameof(Index));
+                    await _db.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            else
+
+            CategoryViewModel categoryVM = new CategoryViewModel()
             {
-                return View(category);
-            }
+                Category = model.Category,
+                StatusMessage = StatusMessage
+            };
+
+            return View(categoryVM);
         }
 
         //GET - DELETE
