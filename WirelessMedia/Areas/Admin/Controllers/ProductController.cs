@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WirelessMedia.Data;
+using WirelessMedia.Models.ViewModel;
 
 namespace WirelessMedia.Areas.Admin.Controllers
 {
@@ -14,9 +15,17 @@ namespace WirelessMedia.Areas.Admin.Controllers
 
         private readonly ApplicationDbContext _db;
 
+        [BindProperty]
+        public ProductViewModel ProductVM { get; set; }
+
         public ProductController(ApplicationDbContext db)
         {
             _db = db;
+            ProductVM = new ProductViewModel()
+            {
+                Category = _db.Category,
+                Product = new Models.Product()
+            };
         }
 
         //GET - ACTION METHOD
@@ -27,6 +36,10 @@ namespace WirelessMedia.Areas.Admin.Controllers
             return View(productList);
         }
 
-       
+        //GET - CREATE
+        public IActionResult Create()
+        {
+            return View(ProductVM);
+        }
     }
 }
