@@ -127,5 +127,27 @@ namespace WirelessMedia.Areas.Admin.Controllers
 
             return View(product);
         }
+
+        //GET - DELETE
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                var product = await _db.Product.FindAsync(id);
+
+                if(product == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    return View(product);
+                }
+            }
+        }
     }
 }
