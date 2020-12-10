@@ -160,7 +160,7 @@ namespace WirelessMedia.Areas.Admin.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var category = await _db.Category.FindAsync(id);
-            
+            var productCategoryId = _db.Product.Include(z=>z.Category).Where(z=>z.CategoryId == id);
 
             if (category == null)
             {
@@ -168,8 +168,17 @@ namespace WirelessMedia.Areas.Admin.Controllers
             }
             else
             {
-                _db.Category.Remove(category);
-                await _db.SaveChangesAsync();
+                if(productCategoryId == category)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    _db.Category.Remove(category);
+                    await _db.SaveChangesAsync();
+                }
+
+                
 
                 return RedirectToAction(nameof(Index));
             }            

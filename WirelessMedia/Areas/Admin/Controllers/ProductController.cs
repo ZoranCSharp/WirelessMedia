@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,7 @@ namespace WirelessMedia.Areas.Admin.Controllers
     {
 
         private readonly ApplicationDbContext _db;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         [BindProperty]
         public ProductViewModel ProductVM { get; set; }
@@ -64,6 +67,11 @@ namespace WirelessMedia.Areas.Admin.Controllers
                 {
                     _db.Product.Add(ProductVM.Product);
                     await _db.SaveChangesAsync();
+
+                    string listVM = JsonConvert.SerializeObject(ProductVM.Product);
+
+                    System.IO.File.WriteAllText(@".\JSON\product.json", JsonConvert.SerializeObject(productName));
+
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -73,6 +81,7 @@ namespace WirelessMedia.Areas.Admin.Controllers
                 Category = _db.Category,
                 StatusMessage = StatusMessage
             };
+            
 
             return View(product);
 
