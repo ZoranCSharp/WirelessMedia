@@ -60,7 +60,7 @@
                     @Html.DisplayFor(z => item.Supplier)
                 </td>
                 <td>                    
-                    @Html.EditorFor(z => item.Price, null, new { htmlAttributes = new { @type = "string", @class = "form-control" } }))
+                    @Html.DisplayFor(z => item.Price)
                 </td>
                 <td>
                     <partial name="_TableButtonPartial" model="item.Id" />

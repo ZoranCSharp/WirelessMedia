@@ -13,15 +13,17 @@ namespace WirelessMedia.Models
 
         [Required]
         public string Name { get; set; }
-
+        [Required]
         public string Description { get; set; }
-
+        [Required]
         public string Manufacturer { get; set; }
-
+        [Required]
         public string Supplier { get; set; }
 
         [Range(0.1, int.MaxValue, ErrorMessage = "Price should be greater than ${1}")]
-        public double Price { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C}")]
+        [Required]
+        public decimal Price { get; set; }
 
         [Display(Name = "Category")]
         [Required]
