@@ -133,19 +133,59 @@ namespace WirelessMedia.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            else
-            {
-                var product = await _db.Product.FindAsync(id);
 
-                if(product == null)
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    return View(product);
-                }
+            ProductVM.Product = await _db.Product.Include(z => z.Category)
+                                         .SingleOrDefaultAsync(z => z.Id == id);
+
+            if(ProductVM.Product == null)
+            {
+                return NotFound();
             }
+
+            return View(ProductVM);
+        }
+
+        //POST - DELETE
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePOST(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            ProductVM.Product = await _db.Product.Include(z => z.Category).SingleOrDefaultAsync(z => z.Id == id);
+
+            if (!ModelState.IsValid)
+            {
+                return NotFound();
+            }
+
+            _db.Product.Remove(ProductVM.Product);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        //GET - DESCRIPTION
+        public async Task<IActionResult> Description(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            ProductVM.Product = await _db.Product.SingleOrDefaultAsync(z => z.Id == id);
+
+            if (!ModelState.IsValid)
+            {
+                return NotFound();
+            }
+
+            return View(ProductVM);
+
+
         }
     }
 }
