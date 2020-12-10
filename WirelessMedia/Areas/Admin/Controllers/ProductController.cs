@@ -80,52 +80,50 @@ namespace WirelessMedia.Areas.Admin.Controllers
 
         //GET - EDIT
         public async Task<IActionResult> Edit(int? id)
-        {
-            var productID = await _db.Product.FindAsync(id);
-
+        {          
             if (id == null)
             {
                 return NotFound();
             }
+            ProductVM.Product = await _db.Product.Include(z => z.Category)
+                                           .SingleOrDefaultAsync(z => z.Id == id);
 
-            ProductViewModel productVM = new ProductViewModel()
+            if(ProductVM.Product == null)
             {
-                Product = productID,
-                Category = _db.Category,
-                StatusMessage = StatusMessage
-            };
-
-            return View(productVM);
+                return NotFound();
+            }
+            
+            return View(ProductVM);
         }
 
         //POST - EDIT
-        [HttpPost]
+        [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id)
-        {
-            if (ModelState.IsValid)
+        public async Task<IActionResult> EditPOST(int? id)
+        {            
+                if(id == null)
+                {
+                    return NotFound();
+                }
+
+            if (!ModelState.IsValid)
             {
-                    var productFromDB = await _db.Product.FindAsync(id);
+                return View(ProductVM);
+            }
+            
+            var productFromDB = await _db.Product.FindAsync(ProductVM.Product.Id);
                     productFromDB.Name = ProductVM.Product.Name;
                     productFromDB.Description = ProductVM.Product.Description;
                     productFromDB.Manufacturer = ProductVM.Product.Manufacturer;
                     productFromDB.Supplier = ProductVM.Product.Supplier;
                     productFromDB.Price = ProductVM.Product.Price;
                     productFromDB.CategoryId = ProductVM.Product.CategoryId;
+            
+            await _db.SaveChangesAsync();
 
-                    await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
 
-                    return RedirectToAction(nameof(Index));
-            }
-
-            ProductViewModel product = new ProductViewModel()
-            {
-                Product = ProductVM.Product,
-                Category = _db.Category,
-                StatusMessage = StatusMessage
-            };
-
-            return View(product);
+           
         }
 
         //GET - DELETE
